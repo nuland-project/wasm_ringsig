@@ -36,7 +36,9 @@ need to mention that `package.json` is same.
 # Issue with rust -> webassembly:
 if we manage to run project, we can see that simple functions like
 ```src/lib.rs:get_str()```
+
 ```src/lib.rs:concat_strs_2()```
+
 ```src/lib.rs:collect_numbers()```
 do work
 
