@@ -1,0 +1,8 @@
+{
+  "presets": [
+//    "react",
+//    "env",
+    "module:metro-react-native-babel-preset"
+  ],
+  "plugins": ["syntax-dynamic-import"]
+}
