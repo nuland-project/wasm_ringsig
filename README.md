@@ -2,7 +2,7 @@
 
 idea is to compile [ringsig rust library] to wasm format using [wasm-bindgen] library
 
-# For somehow below guide does not work for me. and returns error:
+# For somehow below guide does not work for me and returns error:
 "/home/misha/IdeaProjects/tmp/wasm_ringsig/node_modules/webpack-cli/bin/config-yargs.js:89
  				describe: optionsSchema.definitions.output.properties.path.description,
  				                                           ^
@@ -10,6 +10,7 @@ idea is to compile [ringsig rust library] to wasm format using [wasm-bindgen] li
  TypeError: Cannot read property 'properties' of undefined
      at module.exports (/home/misha/IdeaProjects/tmp/wasm_ringsig/node_modules/webpack-cli/bin/config-yargs.js:89:48)
 "
+
 I managed to fix this error by copy-paste folder "node_modules" from another folder with workable project, but this folder must not be added to git.
 need to mention that `package.json` is same.
 
