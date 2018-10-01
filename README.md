@@ -16,7 +16,7 @@ I managed to fix this error by copy-paste folder "node_modules" from another fol
 need to mention that `package.json` is same.
 
 ## how to run:
- * go through [wasm-bindgen tutorial] and install rust dependencies
+ * go through [wasm-bindgen tutorial] and install rust dependencies, create dist and build folders
  * in order to install npm dependencies run
  ```bash
  npm init
