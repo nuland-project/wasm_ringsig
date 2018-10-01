@@ -43,6 +43,7 @@ do work
 and complex rust code like
 ```src/lib.rs:some_sign()``` (which just calculates sign with some hardcoded params)
 does not work with error
+
 `
 wasm-0057bd12-1290:2 Uncaught (in promise) RuntimeError: unreachable
     at __rust_start_panic (wasm-function[1290]:1)
