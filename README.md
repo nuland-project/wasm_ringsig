@@ -11,7 +11,8 @@ idea is to compile [ringsig rust library] to wasm format using [wasm-bindgen] li
      at module.exports (/home/misha/IdeaProjects/tmp/wasm_ringsig/node_modules/webpack-cli/bin/config-yargs.js:89:48)
 "
 
-I managed to fix this error by copy-paste folder "node_modules" from another folder with workable project, but this folder must not be added to git.
+I managed to fix this error by copy-paste folder "node_modules" from another folder with workable project, but this folder must not be added to git
+
 need to mention that `package.json` is same.
 
 ## how to run:
