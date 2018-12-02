@@ -1,8 +1,8 @@
 //#![feature(proc_macro, wasm_custom_section, wasm_import_module)]
 //#![feature(proc_macro_span)]
 //#![feature(proc_macro_raw_ident)]
-extern crate wasm_bindgen;
 extern crate js_sys;
+extern crate wasm_bindgen;
 
 extern crate fujisaki_ringsig as ringsig;
 extern crate hex;
@@ -26,20 +26,20 @@ use std::mem::transmute;
 // Strings can both be passed in and received
 #[wasm_bindgen]
 #[no_mangle]
-pub extern fn get_str() -> String {
+pub extern "C" fn get_str() -> String {
     return "hello from rust".to_owned();
 }
 
 // Strings can both be passed in and received
 #[wasm_bindgen]
 #[no_mangle]
-pub extern fn concat_strs_2(pubkeys: js_sys::Set) -> String {
+pub extern "C" fn concat_strs_2(pubkeys: js_sys::Set) -> String {
     let mut result = "".to_owned();
     for k in pubkeys.keys() {
         // If `k` is a string, add it to result
-//        if k.unwrap().is_string() {
+        //        if k.unwrap().is_string() {
         result = format!("{:?},{:?}", result, k.unwrap());
-//        }
+        //        }
     }
     return result;
 }
@@ -81,12 +81,12 @@ pub fn some_sign() -> String {
 #[wasm_bindgen]
 #[no_mangle]
 /// this function accepts array of strings for 'publeys' var
-pub extern fn sign(
+pub extern "C" fn sign(
     answer: u16,
     question: String,
-    pubkeys: &JsValue,  //array of strings is expected
+    pubkeys: &JsValue, //array of strings is expected
     privkey: String,
-//    ) -> String {
+    //    ) -> String {
 ) -> Result<JsValue, JsValue> {
     let mut pubkeys_rust: Vec<String> = vec![];
     let iterator = js_sys::try_iter(pubkeys)?.unwrap();
@@ -102,14 +102,14 @@ pub extern fn sign(
         }
     }
 
-//    return Ok(JsValue::from(format!("{:?}", pubkeys_rust)));
+    //    return Ok(JsValue::from(format!("{:?}", pubkeys_rust)));
 
-//    return Ok(JsValue::from(sign_rust(
-//        answer,
-//        question,
-//        pubkeys_rust,
-//        privkey,
-//    )));
+    //    return Ok(JsValue::from(sign_rust(
+    //        answer,
+    //        question,
+    //        pubkeys_rust,
+    //        privkey,
+    //    )));
 
     return Ok(
         JsValue::from(
@@ -129,43 +129,33 @@ pub extern fn sign(
 //#[wasm_bindgen]
 //#[no_mangle]
 /// this function accepts values of pure rust types
-fn sign_rust(
-    answer: u16,
-    question: String,
-    pubkeys: Vec<String>,
-    privkey: String,
-) -> String {
-//    let Context { msg, tag, mut keypairs } = setup(10);
-//    let privkey = remove_privkey(&mut keypairs);
+fn sign_rust(answer: u16, question: String, pubkeys: Vec<String>, privkey: String) -> String {
+    //    let Context { msg, tag, mut keypairs } = setup(10);
+    //    let privkey = remove_privkey(&mut keypairs);
     let privkey = ringsig::key::PrivateKey::from_bytes(&*hex::decode(privkey).unwrap()).unwrap();
 
-    let pubkeys: Vec<ringsig::key::PublicKey> = pubkeys.iter().map(|s| ringsig::key::PublicKey::from_bytes(&*hex::decode(s).unwrap()).unwrap()).collect();
-
+    let pubkeys: Vec<ringsig::key::PublicKey> = pubkeys
+        .iter()
+        .map(|s| ringsig::key::PublicKey::from_bytes(&*hex::decode(s).unwrap()).unwrap())
+        .collect();
 
     let tag = ringsig::sig::Tag {
         pubkeys: pubkeys,
         issue: Vec::from(question.as_bytes()),
     };
 
-
     let answer_bytes: [u8; 2] = unsafe { transmute(answer.to_le()) };
 
-
-    let sig = ringsig::sig::sign(
-        &answer_bytes,
-        &tag,
-        &privkey,
-    );
+    let sig = ringsig::sig::sign(&answer_bytes, &tag, &privkey);
 
     return format!("{:?}", sig);
-//    println!("verify result:{:?}", ringsig::sig::verify(
-//        &answer_bytes,
-//        &tag,
-//        &sig,
-//    ));
-//    return format!("{:?}", sig);
+    //    println!("verify result:{:?}", ringsig::sig::verify(
+    //        &answer_bytes,
+    //        &tag,
+    //        &sig,
+    //    ));
+    //    return format!("{:?}", sig);
 }
-
 
 #[cfg(test)]
 mod test {
